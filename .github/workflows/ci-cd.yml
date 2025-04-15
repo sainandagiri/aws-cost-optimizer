@@ -41,11 +41,13 @@ jobs:
         script: |
           echo "Killing existing app if running"
           pkill -f 'aws-cost-optimizer' || true
-
+          
           echo "Deploying new app"
           cd /home/ec2-user/
-
-          # Start app in background safely
+          
           nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > app.log 2>&1 &
           
           echo "App started successfully in background."
+          
+          # Exit cleanly
+          exit 0
