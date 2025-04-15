@@ -31,7 +31,7 @@ jobs:
         source: "target/aws-cost-optimizer-1.0-SNAPSHOT.jar"
         target: "/home/ec2-user/"
 
-    - name: SSH into EC2 and Run App
+    - name: SSH into EC2 and Deploy App
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -39,11 +39,13 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         request_pty: true
         script: |
-          echo "Killing old java process if exists"
+          echo "Killing existing app if running"
           pkill -f 'aws-cost-optimizer' || true
 
-          echo "Starting new app"
+          echo "Deploying new app"
           cd /home/ec2-user/
-          nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > log.txt 2>&1 &
 
-          echo "App Started Successfully"
+          # Start app in background safely
+          nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > app.log 2>&1 &
+          
+          echo "App started successfully in background."
