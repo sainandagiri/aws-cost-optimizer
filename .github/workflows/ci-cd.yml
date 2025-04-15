@@ -37,15 +37,13 @@ jobs:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
+        script_stop: false
         script: |
           echo "Killing old java process if exists"
           pkill -f 'aws-cost-optimizer' || true
-
+          
           echo "Starting new app"
           cd /home/ec2-user/
           nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > log.txt 2>&1 &
-
+          
           echo "App Started Successfully"
-
-          # Prevent GitHub from failing the job
-          true
