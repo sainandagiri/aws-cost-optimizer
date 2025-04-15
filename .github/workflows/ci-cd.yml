@@ -40,10 +40,12 @@ jobs:
         script: |
           echo "Killing old java process if exists"
           pkill -f 'aws-cost-optimizer' || true
-          
+
           echo "Starting new app"
           cd /home/ec2-user/
           nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > log.txt 2>&1 &
-          
+
           echo "App Started Successfully"
-          exit 0
+
+          # Prevent GitHub from failing the job
+          true
