@@ -39,4 +39,6 @@ jobs:
         key: ${{ secrets.EC2_KEY }}
         script: |
           pkill -f 'aws-cost-optimizer' || true
-          nohup java -jar /home/ec2-user/aws-cost-optimizer-1.0-SNAPSHOT.jar > log.txt 2>&1 &
+          cd /home/ec2-user/
+          nohup java -jar aws-cost-optimizer-1.0-SNAPSHOT.jar > /dev/null 2>&1 &
+          echo "App Started Successfully"
